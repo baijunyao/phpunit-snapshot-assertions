@@ -4,6 +4,7 @@ namespace Spatie\Snapshots;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use ReflectionObject;
+use Spatie\Snapshots\Concerns\JsonEncodeFlagsAware;
 use Spatie\Snapshots\Concerns\SnapshotDirectoryAware;
 use Spatie\Snapshots\Concerns\SnapshotIdAware;
 use Spatie\Snapshots\Drivers\HtmlDriver;
@@ -16,6 +17,7 @@ use Spatie\Snapshots\Drivers\YamlDriver;
 
 trait MatchesSnapshots
 {
+    use JsonEncodeFlagsAware;
     use SnapshotDirectoryAware;
     use SnapshotIdAware;
 
@@ -89,7 +91,7 @@ trait MatchesSnapshots
 
     public function assertMatchesJsonSnapshot(array|string|null|int|float|bool $actual): void
     {
-        $this->assertMatchesSnapshot($actual, new JsonDriver());
+        $this->assertMatchesSnapshot($actual, new JsonDriver($this->getJsonEncodeFlags()));
     }
 
     public function assertMatchesObjectSnapshot($actual): void
